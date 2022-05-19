@@ -16,6 +16,7 @@ public class UserController : MonoBehaviour
     TextMeshProUGUI text;
     Color col;
     [SerializeField] GameObject MainCanvas;
+    bool isreached;
 
     void Start()
     {
@@ -26,11 +27,19 @@ public class UserController : MonoBehaviour
     void Update()
     {
         zoomLevel += Input.mouseScrollDelta.y * sensitivity;
-        zoomLevel = Mathf.Clamp(zoomLevel, 0, maxZoom);
+        if (!isreached)
+        {
+            zoomLevel = Mathf.Clamp(zoomLevel, 0, maxZoom);
+        }
+        else
+        {
+            zoomLevel = Mathf.Clamp(zoomLevel, maxZoom, maxZoom);
+
+        }
         zoomPosition = Mathf.MoveTowards(zoomPosition, zoomLevel, speed * Time.deltaTime);
         if (col.a > 0)
         {
-            float ratio = col.a - zoomLevel * .001f;
+            float ratio = col.a - zoomLevel * .003f;
             col.a = Mathf.Lerp(0, 1, ratio);
             text.color = col;
             if(col.a <0.9f)
@@ -43,11 +52,14 @@ public class UserController : MonoBehaviour
 
             transform.position = parentObject.position + (transform.forward * zoomPosition);
         }
+
     }
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Collide Sucess");
+        zoomLevel = Mathf.Lerp(107,0, Time.deltaTime*10);
         other.gameObject.SetActive(false);
         MainCanvas.SetActive(true);
+        isreached = true;
     }
 }

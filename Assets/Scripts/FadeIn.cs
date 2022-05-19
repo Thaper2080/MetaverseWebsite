@@ -6,13 +6,15 @@ using TMPro;
 
 public class FadeIn : MonoBehaviour
 {
-    [SerializeField] RawImage image;
+    [SerializeField] TextMeshProUGUI image;
     Color col;
-    float fadeRate = .005f;
+    float fadeRate = .004f;
+    public GameObject flare;
+
     // Start is called before the first frame update
     void Start()
     {
-        image = GetComponent<RawImage>();
+        image = GetComponent<TextMeshProUGUI>();
         col = image.color;
         fadeRate = Mathf.Clamp(fadeRate, 0, 1);
     }
@@ -25,6 +27,10 @@ public class FadeIn : MonoBehaviour
             float ratio = col.a + fadeRate;
             col.a = Mathf.Lerp(0,1 , ratio);
             image.color = col;
+        }
+        if(col.a >.7f)
+        {
+            flare.SetActive(true);
         }
     }
 }

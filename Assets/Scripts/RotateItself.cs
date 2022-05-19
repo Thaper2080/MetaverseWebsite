@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RotateItself : MonoBehaviour
 {
+    [SerializeField] float speed;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +14,6 @@ public class RotateItself : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.RotateAround(Vector3.up, 5 * Time.deltaTime);
+        transform.RotateAroundLocal(Vector3.up, speed * Time.deltaTime);
     }
 }
