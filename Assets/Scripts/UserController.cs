@@ -12,12 +12,16 @@ public class UserController : MonoBehaviour
     public float sensitivity = 1;
     public float speed = 30;
     public float maxZoom = 30;
+    public float minZoom = 0;
     float zoomPosition;
     TextMeshProUGUI text;
     Color col;
     [SerializeField] GameObject MainCanvas;
     bool isreached;
-
+    [SerializeField] GameObject welcome;
+    [SerializeField] GameObject virtualStore;
+    [SerializeField] GameObject socialLounge;
+    [SerializeField] GameObject virtualMuseum;
     void Start()
     {
         text = GameObject.Find("aiverse").GetComponent<TextMeshProUGUI>();
@@ -29,7 +33,7 @@ public class UserController : MonoBehaviour
         zoomLevel += Input.mouseScrollDelta.y * sensitivity;
         if (!isreached)
         {
-            zoomLevel = Mathf.Clamp(zoomLevel, 0, maxZoom);
+            zoomLevel = Mathf.Clamp(zoomLevel, minZoom, maxZoom);
         }
         else
         {
@@ -52,7 +56,7 @@ public class UserController : MonoBehaviour
 
             transform.position = parentObject.position + (transform.forward * zoomPosition);
         }
-
+        DistanceReached();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -61,5 +65,29 @@ public class UserController : MonoBehaviour
         other.gameObject.SetActive(false);
         MainCanvas.SetActive(true);
         isreached = true;
+    }
+    public void isFlareLit()
+    {
+        isreached = false;
+        Camera.main.backgroundColor = Color.white;
+        maxZoom = 250;
+        minZoom = 85;
+
+    }
+    void DistanceReached()
+    {
+        if(zoomLevel>=130)
+        {
+            virtualStore.SetActive(true);
+            welcome.SetActive(false);
+        }
+        if(zoomLevel >= 180)
+        {
+            socialLounge.SetActive(true);
+        }
+        if(zoomLevel >= 230)
+        {
+            virtualMuseum.SetActive(true);
+        }
     }
 }
